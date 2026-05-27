@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Hotel.Domain.Entities.Pago>
+
+<div class="container mt-4">
+
+    <h2>Pagos</h2>
+
+    <form method="get">
+
+        <div class="row mb-4">
+
+            <div class="col-md-4">
+
+                <input type="text"
+                       name="dni"
+                       class="form-control"
+                       placeholder="Buscar por DNI" />
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button class="btn btn-primary">
+                    Buscar
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+    <table class="table table-bordered">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>DNI</th>
+                <th>Huésped</th>
+                <th>Monto</th>
+                <th>Pago</th>
+                <th>Saldo</th>
+                <th>Estado</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.Hospedaje.Huesped.DNI
+                    </td>
+
+                    <td>
+                        @item.Hospedaje.Huesped.NombreCompleto
+                    </td>
+
+                    <td>
+                        S/ @item.MontoTotal
+                    </td>
+
+                    <td>
+                        S/ @item.MontoPagado
+                    </td>
+
+                    <td>
+                        S/ @item.SaldoPendiente
+                    </td>
+
+                    <td>
+
+                        @if (item.EstadoPago == "Pagado")
+                        {
+                            <span class="badge bg-success">
+                                Pagado
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                Pendiente
+                            </span>
+                        }
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

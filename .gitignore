@@ -1,0 +1,34 @@
+# Visual Studio
+.vs/
+
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ASP.NET Core / .NET
+appsettings.*.json
+!appsettings.json
+
+# Logs
+*.log
+
+# Package manager
+packages/
+
+# Test results
+TestResults/
+*.trx
+
+# Publish output
+publish/
+wwwroot/lib/
+
+# OS files
+.DS_Store
+Thumbs.db
