@@ -1,0 +1,197 @@
+﻿<div class="modal fade"
+     id="modalHospedaje"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form asp-action="RegistrarHospedaje"
+                  method="post">
+
+                <div class="modal-header bg-primary text-white">
+
+                    <h5 class="modal-title">
+                        Registrar Hospedaje
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden"
+                           name="IdHabitacion"
+                           id="IdHabitacion" />
+
+                        
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+
+                            <label>Habitación</label>
+
+                            <input type="text"
+                                   id="NumeroHabitacion"
+                                   class="form-control"
+                                   readonly />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>DNI</label>
+
+                            <input type="text"
+                                   name="DNI"
+                                   id="dniHuesped"
+                                   class="form-control"
+                                   onkeyup="buscarHuesped()"
+                                   required />
+
+                            <small id="mensajeHuesped"
+                                   class="text-success">
+                            </small>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+
+                            <label>Nombre Completo</label>
+
+                            <input type="text"
+                                   name="NombreCompleto"
+                                   id="nombreCompleto"
+                                   class="form-control"
+                                   required />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Teléfono</label>
+
+                            <input type="text"
+                                   name="Telefono"
+                                   id="telefono"
+                                   class="form-control" />
+
+                        </div>
+                    </div>
+
+                        
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+
+                            <label>Fecha Entrada</label>
+
+                            <input type="text"
+                                   id="fechaEntrada"
+                                   class="form-control"
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                   readonly />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Fecha Salida</label>
+
+                            <input type="date"
+                                   name="FechaSalida"
+                                   id="fechaSalida"
+                                   class="form-control"
+                                   min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                   onchange="calcularMontoTotal()"
+                                   required />
+
+                        </div>
+                    </div>
+
+                        
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Precio Habitación</label>
+
+                            <input type="text"
+                                   id="precioHabitacion"
+                                   class="form-control"
+                                   readonly />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Monto Total</label>
+
+                            <input type="number"
+                                   step="0.01"
+                                   name="MontoTotal"
+                                   id="montoTotal"
+                                   class="form-control"
+                                   readonly />
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Pago</label>
+
+                            <input type="number"
+                                   step="0.01"
+                                   name="Pago"
+                                   id="pago"
+                                   class="form-control"
+                                   onkeyup="calcularSaldo()"
+                                   required />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Saldo Pendiente</label>
+
+                            <input type="number"
+                                   step="0.01"
+                                   name="SaldoPendiente"
+                                   id="saldoPendiente"
+                                   class="form-control"
+                                   readonly />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="submit"
+                            class="btn btn-success">
+
+                        Guardar
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

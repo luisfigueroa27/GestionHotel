@@ -1,4 +1,14 @@
-﻿
+﻿@{
+    var activeTab =
+        Context.Request.Query["tab"]
+        .ToString();
+
+    if (string.IsNullOrEmpty(activeTab))
+    {
+        activeTab = "recepcion";
+    }
+}
+
 @model IEnumerable<Hotel.Domain.Entities.Habitacion>
 
 @{
@@ -31,797 +41,104 @@
     font-weight: bold;
     }
 
+    .btn-editar {
+    background-color: #FFD700;
+    border-color: #FFD700;
+    color: white;
+    }
+
+    .btn-editar:hover {
+    background-color: #FFC107;
+    border-color: #FFC107;
+    color: white;
+    }
+
+    .btn-eliminar {
+    background-color: #DC3545;
+    border-color: #DC3545;
+    color: white;
+    }
+
+    .btn-eliminar:hover {
+    background-color: #C82333;
+    border-color: #C82333;
+    color: white;
+    }
+
 </style>
 
 <div class="container mt-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    
+    <ul class="nav nav-pills mb-4"
+        id="habitacionesTabs">
 
-        <h2>
-            Administración de Habitaciones
-        </h2>
+        <li class="nav-item">
 
-        <button class="btn btn-success"
-                onclick="abrirModalHabitacion()">
+            <button class="nav-link
+                @(activeTab == "recepcion"
+                        ? "active"
+                        : "")"
+                    data-bs-toggle="tab"
+                    data-bs-target="#recepcion">
 
-            + Agregar Habitación
+                Recepción
 
-        </button>
+            </button>
 
-    </div>
+        </li>
 
-    <div class="row">
+        <li class="nav-item">
 
-        @foreach (var item in Model)
-        {
-            string color = "success";
+            <button class="nav-link
+                @(activeTab == "administracion"
+                        ? "active"
+                        : "")"
+                    data-bs-toggle="tab"
+                    data-bs-target="#administracion">
 
-            if (item.Estado == "Ocupada")
-                color = "primary";
+                Administración
 
-            if (item.Estado == "Mantenimiento")
-                color = "danger";
+            </button>
 
-            <div class="col-md-3 mb-4">
+        </li>
 
-                <div class="card bg-@color text-white shadow room-card"
-                    @if (item.Estado == "Disponible")
-                    {
-                        <text>
-                            onclick="abrirModal(
-                            @item.IdHabitacion,
-                            '@item.NumeroHabitacion'
-                            )"
-                        </text>
-                    }
+    </ul>
 
-                    @if (item.Estado == "Ocupada")
-                    {
-                        <text>
-                            onclick="verHospedaje(
-                            @item.IdHabitacion
-                            )"
-                        </text>
-                    }
+    <div class="tab-content">
 
-                    @if (item.Estado == "Mantenimiento")
-                    {
-                        <text>
-                            onclick="liberarHabitacion(
-                            @item.IdHabitacion
-                            )"
-                        </text>
-                    }
-                    >
+        @await Html.PartialAsync(
+            "Partials/_Recepcion",
+            Model)
 
-                        <div class="card-body text-center">
-
-                            <h3>
-                                @item.NumeroHabitacion
-                            </h3>
-
-                            <h5>
-                                @item.TipoHabitacion
-                            </h5>
-
-                            <hr />
-
-                            <div class="estado">
-                                @item.Estado
-                            </div>
-
-                            <input type="hidden"
-                                   id="precio_@item.IdHabitacion"
-                                   value="@item.Precio" />
-                        </div>
-
-                    </div>
-
-                </div>
-            }
-
-        </div>
+        @await Html.PartialAsync(
+            "Partials/_Administracion",
+            Model)
 
     </div>
-
-    <!-- MODAL REGISTRAR HOSPEDAJE -->
-
-    <div class="modal fade"
-         id="modalHospedaje"
-         tabindex="-1">
-
-        <div class="modal-dialog">
-
-            <div class="modal-content">
-
-                <form asp-action="RegistrarHospedaje"
-                      method="post">
-
-                    <div class="modal-header bg-primary text-white">
-
-                        <h5 class="modal-title">
-                            Registrar Hospedaje
-                        </h5>
-
-                        <button type="button"
-                                class="btn-close btn-close-white"
-                                data-bs-dismiss="modal">
-                        </button>
-
-                    </div>
-
-                    <div class="modal-body">
-
-                        <input type="hidden"
-                               name="IdHabitacion"
-                               id="IdHabitacion" />
-
-                        
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-
-                                <label>Habitación</label>
-
-                                <input type="text"
-                                       id="NumeroHabitacion"
-                                       class="form-control"
-                                       readonly />
-
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-
-                                <label>DNI</label>
-
-                                <input type="text"
-                                       name="DNI"
-                                       id="dniHuesped"
-                                       class="form-control"
-                                       onkeyup="buscarHuesped()"
-                                       required />
-
-                                <small id="mensajeHuesped"
-                                       class="text-success">
-                                </small>
-
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-
-                                <label>Nombre Completo</label>
-
-                                <input type="text"
-                                       name="NombreCompleto"
-                                       id="nombreCompleto"
-                                       class="form-control"
-                                       required />
-
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-
-                                <label>Teléfono</label>
-
-                                <input type="text"
-                                       name="Telefono"
-                                       id="telefono"
-                                       class="form-control" />
-
-                            </div>
-                        </div>
-
-                        
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-
-                                <label>Fecha Entrada</label>
-
-                                <input type="text"
-                                       id="fechaEntrada"
-                                       class="form-control"
-                                       value="@DateTime.Now.ToString("yyyy-MM-dd")"
-                                       readonly />
-
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-
-                                <label>Fecha Salida</label>
-
-                                <input type="date"
-                                       name="FechaSalida"
-                                       id="fechaSalida"
-                                       class="form-control"
-                                       min="@DateTime.Now.ToString("yyyy-MM-dd")"
-                                       onchange="calcularMontoTotal()"
-                                       required />
-
-                            </div>
-                        </div>
-
-                        
-                        <div class="row">
-
-                            <div class="col-md-6 mb-3">
-
-                                <label>Precio Habitación</label>
-
-                                <input type="text"
-                                       id="precioHabitacion"
-                                       class="form-control"
-                                       readonly />
-
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-
-                                <label>Monto Total</label>
-
-                                <input type="number"
-                                       step="0.01"
-                                       name="MontoTotal"
-                                       id="montoTotal"
-                                       class="form-control"
-                                       readonly />
-
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-
-                            <div class="col-md-6 mb-3">
-
-                                <label>Pago</label>
-
-                                <input type="number"
-                                       step="0.01"
-                                       name="Pago"
-                                       id="pago"
-                                       class="form-control"
-                                       onkeyup="calcularSaldo()"
-                                       required />
-
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-
-                                <label>Saldo Pendiente</label>
-
-                                <input type="number"
-                                       step="0.01"
-                                       name="SaldoPendiente"
-                                       id="saldoPendiente"
-                                       class="form-control"
-                                       readonly />
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-
-                        <button type="submit"
-                                class="btn btn-success">
-
-                            Guardar
-
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
+    
     </div>
 
-    <!-- MODAL DETALLE HOSPEDAJE -->
+    @await Html.PartialAsync("Partials/_ModalHospedaje")
 
-    <div class="modal fade"
-         id="modalDetalleHospedaje"
-         tabindex="-1">
+    @await Html.PartialAsync("Partials/_ModalDetalleHospedaje")
 
-        <div class="modal-dialog">
+    @await Html.PartialAsync("Partials/_ModalNuevaHabitacion")
 
-            <div class="modal-content">
+    @await Html.PartialAsync("Partials/_ModalEditarHabitacion")
 
-                <div class="modal-header bg-primary text-white">
+    @await Html.PartialAsync("Partials/_ModalTiposHabitacion")
 
-                    <h5 class="modal-title">
-
-                        Información del Hospedaje
-
-                    </h5>
-
-                    <button type="button"
-                            class="btn-close btn-close-white"
-                            data-bs-dismiss="modal">
-                    </button>
-
-                </div>
-
-                <div class="modal-body">
-
-                    <p>
-                        <strong>Habitación:</strong>
-                        <span id="detalleHabitacion"></span>
-                    </p>
-
-                    <p>
-                        <strong>Huésped:</strong>
-                        <span id="detalleHuesped"></span>
-                    </p>
-
-                    <p>
-                        <strong>DNI:</strong>
-                        <span id="detalleDni"></span>
-                    </p>
-
-                    <p>
-                        <strong>Teléfono:</strong>
-                        <span id="detalleTelefono"></span>
-                    </p>
-
-                    <p>
-                        <strong>Fecha Entrada:</strong>
-                        <span id="detalleEntrada"></span>
-                    </p>
-
-                    <p>
-                        <strong>Fecha Salida:</strong>
-                        <span id="detalleSalida"></span>
-                    </p>
-
-                    <input type="hidden"
-                           id="idHospedajeFinalizar" />
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button class="btn btn-danger"
-                            onclick="finalizarHospedaje()">
-
-                        Finalizar Hospedaje
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- MODAL NUEVA HABITACION -->
-
-    <div class="modal fade"
-         id="modalHabitacion"
-         tabindex="-1">
-
-        <div class="modal-dialog">
-
-            <div class="modal-content">
-
-                <form asp-action="RegistrarHabitacion"
-                      method="post">
-
-                    <div class="modal-header bg-success text-white">
-
-                        <h5 class="modal-title">
-
-                            Nueva Habitación
-
-                        </h5>
-
-                        <button type="button"
-                                class="btn-close btn-close-white"
-                                data-bs-dismiss="modal">
-                        </button>
-
-                    </div>
-
-                    <div class="modal-body">
-
-                        <div class="mb-3">
-
-                            <label>Número Habitación</label>
-
-                            <input type="text"
-                                   name="NumeroHabitacion"
-                                   class="form-control"
-                                   required />
-
-                        </div>
-
-                        <div class="mb-3">
-
-                            <label>Tipo Habitación</label>
-
-                            <select name="TipoHabitacion"
-                                    class="form-select"
-                                    required>
-
-                                <option value="">
-                                    Seleccione
-                                </option>
-
-                                <option value="Simple">
-                                    Simple
-                                </option>
-
-                                <option value="Doble">
-                                    Doble
-                                </option>
-
-                                <option value="Matrimonial">
-                                    Matrimonial
-                                </option>
-
-                                <option value="Suite">
-                                    Suite
-                                </option>
-
-                            </select>
-                            <div class="mb-3">
-
-                                <label>Precio</label>
-
-                                <input type="number"
-                                       step="0.01"
-                                       name="Precio"
-                                       class="form-control"
-                                       required />
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-
-                        <button type="submit"
-                                class="btn btn-success">
-
-                            Guardar
-
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
+<script src="~/js/habitaciones/pagos.js"></script>
 
-        // =========================
-        // MODAL HOSPEDAJE
-        // =========================
+<script src="~/js/habitaciones/hospedajes.js"></script>
 
-        function abrirModal(id, numero)
-        {
-        document.getElementById("IdHabitacion").value = id;
+<script src="~/js/habitaciones/tiposHabitacion.js"></script>
 
-        document.getElementById("NumeroHabitacion").value = numero;
-
-        let modal = new bootstrap.Modal(
-        document.getElementById('modalHospedaje')
-        );
-
-        let precio =
-        parseFloat(
-        document.getElementById(
-        "precio_" + id).value
-        );
-
-        document.getElementById(
-        "precioHabitacion").value =
-        precio;
-
-        document.getElementById(
-        "montoTotal").value =
-        precio;
-            
-        calcularMontoTotal();
-
-        modal.show();
-        }
-        // =========================
-        // BUSCAR HUESPED
-        // =========================
-        async function buscarHuesped()
-        {
-        let dni =
-        document.getElementById(
-        "dniHuesped").value;
-
-        // VALIDAR LONGITUD
-
-        if(dni.length < 8)
-        {
-        return;
-        }
-
-        let response = await fetch(
-        '/Habitaciones/BuscarHuesped?dni='
-        + dni
-        );
-
-        let data = await response.json();
-
-        // EXISTE
-
-        if(data.existe)
-        {
-        document.getElementById(
-        "nombreCompleto").value =
-        data.nombreCompleto;
-
-        document.getElementById(
-        "telefono").value =
-        data.telefono;
-
-        document.getElementById(
-        "mensajeHuesped").innerHTML =
-        "Huésped registrado";
-
-        document.getElementById(
-        "mensajeHuesped").className =
-        "text-success";
-        }
-
-        // NUEVO
-
-        else
-        {
-        document.getElementById(
-        "nombreCompleto").value = "";
-
-        document.getElementById(
-        "telefono").value = "";
-
-        document.getElementById(
-        "mensajeHuesped").innerHTML =
-        "Huésped nuevo";
-
-        document.getElementById(
-        "mensajeHuesped").className =
-        "text-danger";
-        }
-        }
-
-        // =========================
-        // MODAL HABITACION
-        // =========================
-
-        function abrirModalHabitacion()
-        {
-        let modal = new bootstrap.Modal(
-        document.getElementById('modalHabitacion')
-        );
-
-        modal.show();
-        }
-
-        // =========================
-        // VER HOSPEDAJE
-        // =========================
-
-        async function verHospedaje(idHabitacion)
-        {
-        let response = await fetch(
-        '/Habitaciones/ObtenerHospedaje?idHabitacion='
-        + idHabitacion
-        );
-
-        let data = await response.json();
-
-        if(data != null)
-        {
-        document.getElementById("detalleHabitacion")
-        .innerText = data.habitacion;
-
-        document.getElementById("detalleHuesped")
-        .innerText = data.huesped;
-
-        document.getElementById("detalleDni")
-        .innerText = data.dni;
-
-        document.getElementById("detalleTelefono")
-        .innerText = data.telefono;
-
-        document.getElementById("detalleEntrada")
-        .innerText = data.fechaEntrada;
-
-        document.getElementById("detalleSalida")
-        .innerText = data.fechaSalida;
-
-        document.getElementById("idHospedajeFinalizar")
-        .value = data.idHospedaje;
-
-        let modal = new bootstrap.Modal(
-        document.getElementById(
-        'modalDetalleHospedaje')
-        );
-
-        modal.show();
-        }
-        }
-
-        // =========================
-        // FINALIZAR HOSPEDAJE
-        // =========================
-
-        async function finalizarHospedaje()
-        {
-        let idHospedaje =
-        document.getElementById(
-        "idHospedajeFinalizar").value;
-
-        await fetch('/Habitaciones/FinalizarHospedaje', {
-
-        method: 'POST',
-
-        headers: {
-        'Content-Type':
-        'application/x-www-form-urlencoded'
-        },
-
-        body: 'idHospedaje=' + idHospedaje
-        });
-
-        Swal.fire({
-        icon:'success',
-        title:'Hospedaje Finalizado'
-        }).then(() => {
-
-        location.reload();
-
-        });
-        }
-
-        // =========================
-        // LIBERAR HABITACION
-        // =========================
-
-        async function liberarHabitacion(idHabitacion)
-        {
-        Swal.fire({
-
-        title:'¿Liberar habitación?',
-
-        icon:'question',
-
-        showCancelButton:true,
-
-        confirmButtonText:'Sí'
-
-        }).then(async(result)=>{
-
-        if(result.isConfirmed)
-        {
-        await fetch(
-        '/Habitaciones/LiberarHabitacion',
-        {
-        method:'POST',
-
-        headers:{
-        'Content-Type':
-        'application/x-www-form-urlencoded'
-        },
-
-        body:'idHabitacion=' + idHabitacion
-        });
-
-        Swal.fire({
-        icon:'success',
-        title:'Habitación Disponible'
-        }).then(()=>{
-
-        location.reload();
-
-        });
-        }
-
-        });
-        }
-
-
-        function calcularSaldo()
-        {
-        let monto =
-        parseFloat(
-        document.getElementById(
-        "montoTotal").value
-        );
-
-        let pago =
-        parseFloat(
-        document.getElementById(
-        "pago").value
-        ) || 0;
-
-        let saldo = monto - pago;
-
-        document.getElementById(
-        "saldoPendiente").value =
-        saldo.toFixed(2);
-        }
-
-        function calcularMontoTotal()
-        {
-        let fechaEntrada =
-        new Date(
-        document.getElementById(
-        "fechaEntrada").value
-        );
-
-        let fechaSalida =
-        new Date(
-        document.getElementById(
-        "fechaSalida").value
-        );
-
-        let precio =
-        parseFloat(
-        document.getElementById(
-        "precioHabitacion").value
-        ) || 0;
-
-        // VALIDAR FECHAS
-
-        if(!fechaSalida || !precio)
-        {
-        return;
-        }
-
-        // DIFERENCIA EN DIAS
-
-        let diferencia =
-        fechaSalida - fechaEntrada;
-
-        let dias =
-        diferencia / (1000 * 60 * 60 * 24);
-
-        // MINIMO 1 DIA
-
-        if(dias <= 0)
-        {
-        dias = 1;
-        }
-
-        // CALCULAR TOTAL
-
-        let total = dias * precio;
-
-        document.getElementById(
-        "montoTotal").value =
-        total.toFixed(2);
-
-        // ACTUALIZAR SALDO
-
-        calcularSaldo();
-        }
-
-    </script>
+<script src="~/js/habitaciones/habitaciones.js"></script>
 
     @if (TempData["success"] != null)
     {

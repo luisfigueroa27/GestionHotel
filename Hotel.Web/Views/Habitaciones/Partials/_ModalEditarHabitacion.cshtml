@@ -1,0 +1,131 @@
+﻿<div class="modal fade"
+     id="modalEditarHabitacion"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form asp-action="EditarHabitacion"
+                  method="post">
+
+                <div class="modal-header bg-warning">
+
+                    <h5>
+                        Editar Habitación
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden"
+                           name="IdHabitacion"
+                           id="editId" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Número</label>
+                            <input type="text"
+                                   name="NumeroHabitacion"
+                                   id="editNumero"
+                                   class="form-control"
+                                   required />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Tipo</label>
+
+                            <select name="IdTipoHabitacion"
+                                    id="editTipo"
+                                    class="form-select"
+                                    required>
+
+                                @foreach (var tipo in ViewBag.TiposHabitacion)
+                                {
+                                    <option value="@tipo.IdTipoHabitacion">
+                                        @tipo.Nombre
+                                    </option>
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label>Precio</label>
+
+                            <input type="number"
+                                   step="0.01"
+                                   name="Precio"
+                                   id="editPrecio"
+                                   class="form-control" />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Piso</label>
+
+                            <input type="number"
+                                   id="editPiso"
+                                   name="Piso"
+                                   class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label>Capacidad</label>
+
+                            <input type="number"
+                                   id="editCapacidad"
+                                   name="Capacidad"
+                                   class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Estado</label>
+
+                            <select name="Estado"
+                                    id="editEstado"
+                                    class="form-select">
+
+                                <option>Disponible</option>
+                                <option>Ocupada</option>
+                                <option>Mantenimiento</option>
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Comodidades</label>
+
+                        <textarea id="editComodidades"
+                                  name="Comodidades"
+                                  class="form-control"
+                                  rows="3">
+    </textarea>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button class="btn btn-warning">
+                        Actualizar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

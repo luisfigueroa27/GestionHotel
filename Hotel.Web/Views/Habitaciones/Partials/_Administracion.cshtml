@@ -1,0 +1,144 @@
+﻿@model IEnumerable<Hotel.Domain.Entities.Habitacion>
+
+@{
+    var activeTab = Context.Request.Query["tab"].ToString();
+
+    if (string.IsNullOrEmpty(activeTab))
+    {
+        activeTab = "recepcion";
+    }
+}
+
+<div class="tab-pane fade @(activeTab == "administracion" ? "show active" : "")"
+     id="administracion">
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <div class="row mb-3 align-items-center">
+
+                <div class="col-md-4">
+
+                    <input type="text"
+                           id="buscarHabitacion"
+                           class="form-control"
+                           placeholder="Buscar por número, tipo, estado..."
+                           onkeyup="filtrarHabitaciones()">
+
+                </div>
+
+                <div class="col-md-auto">
+
+                    <button class="btn btn-success"
+                            onclick="abrirModalHabitacion()">
+
+                        <i class="fas fa-plus"></i>
+                        Nueva Habitación
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <table id="tablaHabitaciones"
+                   class="table table-striped table-hover table-bordered align-middle">
+
+                <thead class="table-dark">
+
+                    <tr>
+                        <th>N°</th>
+                        <th>Tipo</th>
+                        <th>Precio</th>
+                        <th>Piso</th>
+                        <th>Cap.</th>
+                        <th>Comodidades</th>
+                        <th>Estado</th>
+                        <th class="text-center">Editar</th>
+                        <th class="text-center">Eliminar</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.NumeroHabitacion</td>
+
+                            <td>@item.TipoHabitacion.Nombre</td>
+
+                            <td>S/ @item.Precio</td>
+
+                            <td>@item.Piso</td>
+
+                            <td>@item.Capacidad</td>
+
+                            <td>@item.Comodidades</td>
+
+                            <td>
+
+                                @if (item.Estado == "Disponible")
+                                {
+                                    <span class="badge bg-success">
+                                        Disponible
+                                    </span>
+                                }
+                                else if (item.Estado == "Ocupada")
+                                {
+                                    <span class="badge bg-primary">
+                                        Ocupada
+                                    </span>
+                                }
+                                else if (item.Estado == "Mantenimiento")
+                                {
+                                    <span class="badge bg-danger">
+                                        Mantenimiento
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        @item.Estado
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <button class="btn btn-editar btn-sm"
+                                        onclick="editarHabitacion(@item.IdHabitacion)">
+
+                                    Editar
+
+                                </button>
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <button class="btn btn-eliminar btn-sm"
+                                        onclick="eliminarHabitacion(@item.IdHabitacion)">
+
+                                    Eliminar
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

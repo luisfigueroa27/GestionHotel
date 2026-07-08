@@ -32,7 +32,13 @@ namespace Hotel.Tests.Controllers
                 {
                     IdHabitacion = 1,
                     NumeroHabitacion = "101",
-                    TipoHabitacion = "Simple",
+                    IdTipoHabitacion = 1,
+
+                    TipoHabitacion = new TipoHabitacion
+                    {
+                        IdTipoHabitacion = 1,
+                        Nombre = "Simple"
+                    },
                     Estado = "Ocupada"
                 });
 

@@ -42,7 +42,7 @@ namespace Hotel.Web.Controllers
 
             return RedirectToAction(
                 "Index",
-                "Habitaciones");
+                "Dashboard");
         }
 
         public IActionResult Logout()

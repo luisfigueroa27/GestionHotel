@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Hotel.Domain.Entities.Habitacion>
+
+@{
+    var activeTab = Context.Request.Query["tab"].ToString();
+
+    if (string.IsNullOrEmpty(activeTab))
+    {
+        activeTab = "recepcion";
+    }
+
+    var habitacionesVencidas =
+        ViewBag.HabitacionesVencidas
+        as List<int> ?? new List<int>();
+}
+
+<div class="tab-pane fade @(activeTab == "recepcion" ? "show active" : "")"
+     id="recepcion">
+
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            string color = "success";
+
+            if (habitacionesVencidas.Contains(item.IdHabitacion))
+            {
+                color = "warning";
+            }
+            else if (item.Estado == "Ocupada")
+            {
+                color = "primary";
+            }
+            else if (item.Estado == "Mantenimiento")
+            {
+                color = "danger";
+            }
+
+            <div class="col-md-3 mb-4">
+
+                <div class="card bg-@color text-white shadow room-card"
+                    @if (item.Estado == "Disponible")
+                    {
+                        <text>
+                            onclick="abrirModal(
+                            @item.IdHabitacion,
+                            '@item.NumeroHabitacion')"
+                        </text>
+                    }
+
+                    @if (item.Estado == "Ocupada")
+                    {
+                        <text>
+                            onclick="verHospedaje(
+                            @item.IdHabitacion)"
+                        </text>
+                    }
+
+                    @if (item.Estado == "Mantenimiento")
+                    {
+                        <text>
+                            onclick="liberarHabitacion(
+                            @item.IdHabitacion)"
+                        </text>
+                    }
+                    >
+
+                        <div class="card-body text-center">
+
+                            <h3>
+                                @item.NumeroHabitacion
+                            </h3>
+
+                            <h5>
+                                @item.TipoHabitacion.Nombre
+                            </h5>
+
+                            <hr />
+
+                            @if (habitacionesVencidas.Contains(item.IdHabitacion))
+                            {
+                                <span class="badge bg-warning">
+                                    VENCIDO
+                                </span>
+                            }
+                            else if (item.Estado == "Disponible")
+                            {
+                                <span class="badge bg-success">
+                                    Disponible
+                                </span>
+                            }
+                            else if (item.Estado == "Ocupada")
+                            {
+                                <span class="badge bg-primary">
+                                    Ocupada
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    Mantenimiento
+                                </span>
+                            }
+
+                            <hr />
+
+                            <input type="hidden"
+                                   id="precio_@item.IdHabitacion"
+                                   value="@item.Precio" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>

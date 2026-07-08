@@ -1,0 +1,166 @@
+﻿<div class="modal fade"
+     id="modalHabitacion"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form asp-action="RegistrarHabitacion"
+                  method="post"
+                  onsubmit="return validarFormularioHabitacion()">
+
+                <div class="modal-header bg-success text-white">
+
+                    <h5 class="modal-title">
+
+                        Nueva Habitación
+
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Número Habitación</label>
+
+                            <input type="text"
+                                   name="NumeroHabitacion"
+                                   id="numeroHabitacion"
+                                   class="form-control"
+                                   onkeyup="validarNumeroHabitacion()"
+                                   required />
+
+                            <small id="mensajeNumeroHabitacion"
+                                   class="text-danger"
+                                   style="display:none;">
+                            </small>
+
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Tipo Habitación</label>
+
+                            <div class="input-group">
+
+                                <select name="IdTipoHabitacion"
+                                        class="form-select"
+                                        required>
+
+                                    <option value="">
+                                        Seleccione
+                                    </option>
+
+                                    @foreach (var tipo in
+                                        ViewBag
+                                        .TiposHabitacion)
+                                    {
+                                        <option value="@tipo.IdTipoHabitacion">
+                                            @tipo.Nombre
+                                        </option>
+                                    }
+
+                                </select>
+
+                                <button type="button"
+                                        class="btn btn-success"
+                                        onclick="abrirTipos()">
+
+                                    +
+
+                                </button>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Precio</label>
+
+                            <input type="number"
+                                   step="0.01"
+                                   name="Precio"
+                                   class="form-control"
+                                   required />
+
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Piso</label>
+
+                            <input type="number"
+                                   name="Piso"
+                                   class="form-control"
+                                   min="1"
+                                   value="1"
+                                   required />
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Capacidad</label>
+
+                            <input type="number"
+                                   name="Capacidad"
+                                   class="form-control"
+                                   min="1"
+                                   value="1"
+                                   required />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Comodidades</label>
+
+                            <textarea name="Comodidades"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Wifi, TV, Netflix, Aire acondicionado">
+        </textarea>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="submit"
+                            class="btn btn-success">
+
+                        Guardar
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

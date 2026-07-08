@@ -32,7 +32,13 @@ namespace Hotel.Tests.Controllers
                 {
                     IdHabitacion = 1,
                     NumeroHabitacion = "101",
-                    TipoHabitacion = "Simple",
+                    IdTipoHabitacion = 1,
+
+                    TipoHabitacion = new TipoHabitacion
+                    {
+                        IdTipoHabitacion = 1,
+                        Nombre = "Simple"
+                    },
                     Precio = 80,
                     Estado = "Disponible"
                 });
@@ -100,9 +106,12 @@ namespace Hotel.Tests.Controllers
             var controller = CrearController();
 
             await controller.RegistrarHabitacion(
-                "102",
-                120,
-                "Doble");
+                "102",     // Número
+                2,         // IdTipoHabitacion (Doble)
+                120,       // Precio
+                1,         // Piso
+                2,         // Capacidad
+                "TV, WIFI");
 
             var habitacion =
                 await _context.Habitaciones
@@ -122,9 +131,12 @@ namespace Hotel.Tests.Controllers
             var controller = CrearController();
 
             await controller.RegistrarHabitacion(
-                "101",
-                80,
-                "Simple");
+                 "101",
+                 1,         // IdTipoHabitacion (Simple)
+                 80,
+                 1,
+                 1,
+                 "TV");
 
             var total =
                 await _context.Habitaciones

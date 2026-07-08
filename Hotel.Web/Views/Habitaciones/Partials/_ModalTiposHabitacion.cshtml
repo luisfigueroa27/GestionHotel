@@ -1,0 +1,63 @@
+﻿<div class="modal fade"
+     id="modalTipos">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+
+                <h5 class="modal-title">
+                    Tipos de Habitación
+                </h5>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div id="listaTipos">
+
+                    @await Html.PartialAsync(
+                        "_ListaTiposHabitacion",
+                        (IEnumerable<TipoHabitacion>)ViewBag.TiposHabitacion)
+
+                </div>
+
+                <hr>
+
+                <div class="mb-3">
+
+                    <input type="hidden"
+                           id="idTipoEditar"
+                           value="0">
+
+                    <input type="text"
+                           id="nuevoTipo"
+                           class="form-control"
+                           placeholder="Nuevo tipo de habitación">
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-success"
+                        onclick="agregarTipoHabitacion()">
+                    Agregar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

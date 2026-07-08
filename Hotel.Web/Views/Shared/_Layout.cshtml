@@ -125,6 +125,20 @@
 
             <div class="menu">
 
+                <li class="nav-item">
+
+                    <a asp-controller="Dashboard"
+                       asp-action="Index"
+                       class="@(currentController == "Dashboard" ? "active" : "")">
+
+                        <i class="bi bi-speedometer2"></i>
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
                 <a asp-controller="Habitaciones"
                        asp-action="Index"
                        class="@(currentController == "Habitaciones" ? "active" : "")">
@@ -158,7 +172,8 @@
                 <li>
 
                     <a asp-controller="Pagos"
-                           asp-action="Index">
+                       asp-action="Index"
+                       class="@(currentController == "Pagos" ? "active" : "")">
 
                         <i class="bi bi-cash-stack"></i>
 

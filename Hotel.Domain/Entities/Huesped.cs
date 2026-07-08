@@ -9,7 +9,7 @@ namespace Hotel.Domain.Entities
     {
         public int IdHuesped { get; set; }
 
-        public string NombreCompleto { get; set; }
+        public string NombreCompleto { get; set; } 
 
         public string DNI { get; set; }
 

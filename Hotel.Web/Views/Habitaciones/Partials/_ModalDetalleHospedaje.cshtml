@@ -1,0 +1,113 @@
+﻿<div class="modal fade"
+     id="modalDetalleHospedaje"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+
+                <h5 class="modal-title">
+
+                    Información del Hospedaje
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p>
+                    <strong>Habitación:</strong>
+                    <span id="detalleHabitacion"></span>
+                </p>
+
+                <p>
+                    <strong>Huésped:</strong>
+                    <span id="detalleHuesped"></span>
+                </p>
+
+                <p>
+                    <strong>DNI:</strong>
+                    <span id="detalleDni"></span>
+                </p>
+
+                <p>
+                    <strong>Teléfono:</strong>
+                    <span id="detalleTelefono"></span>
+                </p>
+
+                <p>
+                    <strong>Fecha Entrada:</strong>
+                    <span id="detalleEntrada"></span>
+                </p>
+
+                <p>
+                    <strong>Fecha Salida:</strong>
+                    <span id="detalleSalida"></span>
+                </p>
+
+                <input type="hidden"
+                       id="idHospedajeFinalizar" />
+
+                <input type="hidden"
+                       id="idHospedajeExtension" />
+
+            </div>
+
+            <div id="panelExtension"
+                 class="card card-body bg-light mt-3">
+
+                <label class="fw-bold mb-2">
+                    Extender Estadía
+                </label>
+
+                <div class="row">
+
+                    <div class="col-md-7">
+
+                        <input type="date"
+                               id="nuevaFechaSalida"
+                               class="form-control"
+                               min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+
+                    </div>
+
+                    <div class="col-md-5">
+
+                        <button type="button"
+                                class="btn btn-success w-100"
+                                onclick="extenderHospedaje()">
+
+                            Guardar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-danger"
+                        onclick="finalizarHospedaje()">
+
+                    Finalizar Hospedaje
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

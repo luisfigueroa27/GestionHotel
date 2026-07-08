@@ -21,6 +21,12 @@ namespace Hotel.Infrastructure.Data
         public DbSet<ServicioCuarto> ServicioCuarto { get; set; }
         public DbSet<Pago> Pagos { get; set; }
 
+        public DbSet<TipoHabitacion>
+    TiposHabitacion
+        {
+            get; set;
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -34,6 +40,10 @@ namespace Hotel.Infrastructure.Data
                 entity.ToTable("Habitaciones");
 
                 entity.HasKey(h => h.IdHabitacion);
+
+                entity.HasOne(h => h.TipoHabitacion)
+      .WithMany(t => t.Habitaciones)
+      .HasForeignKey(h => h.IdTipoHabitacion);
             });
 
             // =========================
@@ -118,6 +128,21 @@ namespace Hotel.Infrastructure.Data
                     .HasForeignKey(p => p.IdHospedaje)
                     .OnDelete(DeleteBehavior.Cascade);
             });
+
+            // =========================
+            // TipoHabitacion
+            // =========================
+            modelBuilder
+    .Entity<TipoHabitacion>(
+        entity =>
+        {
+            entity.ToTable(
+                "TiposHabitacion");
+
+            entity.HasKey(
+                t =>
+                t.IdTipoHabitacion);
+        });
         }
     }
 }

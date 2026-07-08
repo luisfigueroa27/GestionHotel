@@ -1,0 +1,367 @@
+﻿@model Hotel.Web.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+
+    .dashboard-card {
+        border: none;
+        border-radius: 18px;
+        transition: .25s;
+        box-shadow: 0 8px 18px rgba(0,0,0,.08);
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 22px rgba(0,0,0,.15);
+        }
+
+    .dashboard-icon {
+        font-size: 48px;
+        opacity: .9;
+    }
+
+    .dashboard-title {
+        font-size: 15px;
+        font-weight: 600;
+        opacity: .9;
+    }
+
+    .dashboard-number {
+        font-size: 34px;
+        font-weight: bold;
+    }
+
+    .info-card {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 8px 18px rgba(0,0,0,.08);
+    }
+
+    .progress {
+        height: 30px;
+        border-radius: 20px;
+    }
+
+    .chart-container {
+        position: relative;
+        width: 100%;
+        height: 300px;
+    }
+
+    @@media(max-width:992px) {
+
+        .chart-container {
+            height: 300px;
+        }
+    }
+
+    @@media(max-width:768px) {
+
+        .chart-container {
+            height: 250px;
+        }
+    }
+
+</style>
+
+<div class="container-fluid">
+
+    <!-- PRIMERA FILA -->
+
+    <div class="row g-4">
+
+        <!-- DISPONIBLES -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card dashboard-card bg-success text-white">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <div class="dashboard-title">
+                                Disponibles
+                            </div>
+
+                            <div class="dashboard-number">
+                                @Model.Disponibles
+                            </div>
+
+                        </div>
+
+                        <i class="bi bi-door-open-fill dashboard-icon"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- OCUPADAS -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card dashboard-card bg-primary text-white">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <div class="dashboard-title">
+                                Ocupadas
+                            </div>
+
+                            <div class="dashboard-number">
+                                @Model.Ocupadas
+                            </div>
+
+                        </div>
+
+                        <i class="bi bi-person-fill-check dashboard-icon"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- VENCIDAS -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card dashboard-card bg-warning text-dark">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <div class="dashboard-title">
+                                Vencidas
+                            </div>
+
+                            <div class="dashboard-number">
+                                @Model.Vencidas
+                            </div>
+
+                        </div>
+
+                        <i class="bi bi-clock-history dashboard-icon"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- MANTENIMIENTO -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card dashboard-card bg-danger text-white">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <div class="dashboard-title">
+                                Mantenimiento
+                            </div>
+
+                            <div class="dashboard-number">
+                                @Model.Mantenimiento
+                            </div>
+
+                        </div>
+
+                        <i class="bi bi-tools dashboard-icon"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- GRAFICO -->
+
+    <div class="card info-card mt-4">
+
+        <div class="card-header bg-white">
+
+            <div class="row align-items-end">
+
+                <div class="col-md-3">
+
+                    <label class="form-label">
+
+                        Fecha inicio
+
+                    </label>
+
+                    <input type="date"
+                           id="fechaInicio"
+                           class="form-control">
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="form-label">
+
+                        Fecha fin
+
+                    </label>
+
+                    <input type="date"
+                           id="fechaFin"
+                           class="form-control">
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button class="btn btn-success w-100"
+                            onclick="cargarGrafico()">
+
+                        <i class="bi bi-search"></i>
+
+                        Filtrar
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="chart-container">
+
+            <canvas id="graficoIngresos"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    let grafico;
+
+    async function cargarGrafico() {
+
+    const inicio =
+    document.getElementById("fechaInicio").value;
+
+    const fin =
+    document.getElementById("fechaFin").value;
+
+    if (inicio === "" || fin === "")
+    return;
+
+    const response =
+    await fetch(`/Dashboard/ObtenerIngresos?fechaInicio=${inicio}&fechaFin=${fin}`);
+
+    const datos =
+    await response.json();
+
+    const etiquetas =
+    datos.map(x => x.fecha);
+
+    const montos =
+    datos.map(x => x.total);
+
+    if (grafico)
+    grafico.destroy();
+
+    grafico =
+    new Chart(
+    document.getElementById("graficoIngresos"),
+    {
+
+    type: 'bar',
+
+    data: {
+
+    labels: etiquetas,
+
+    datasets: [
+
+    {
+
+    label: "Ingresos",
+
+    data: montos,
+
+    borderRadius: 10
+
+    }
+
+    ]
+
+    },
+
+    options: {
+
+    responsive: true,
+
+    plugins: {
+
+    legend: {
+
+    display: false
+
+    }
+
+    }
+
+    }
+
+    });
+
+    }
+
+
+
+    const hoy = new Date();
+
+    const primerDia =
+    new Date(
+    hoy.getFullYear(),
+    hoy.getMonth(),
+    1);
+
+    document.getElementById("fechaInicio").value =
+    primerDia.toISOString().substring(0,10);
+
+    document.getElementById("fechaFin").value =
+    hoy.toISOString().substring(0,10);
+
+    cargarGrafico();
+    
+
+</script>

@@ -28,7 +28,13 @@ namespace Hotel.Tests.Controllers
             var habitacion = new Habitacion
             {
                 NumeroHabitacion = "101",
-                TipoHabitacion = "Simple",
+                IdTipoHabitacion = 1,
+
+                TipoHabitacion = new TipoHabitacion
+                {
+                    IdTipoHabitacion = 1,
+                    Nombre = "Simple"
+                },
                 Precio = 80,
                 Estado = "Disponible"
             };
