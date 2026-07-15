@@ -84,7 +84,7 @@ Hotel.Web/
 │   ├── LoginController.cs
 │   ├── DashboardController.cs
 │   ├── HabitacionesController.cs
-│   ├── HuespedController.cs    ← NUEVO si aún no existe
+│   ├── HuespedController.cs    
 │   ├── ServicioCuartoController.cs
 │   ├── PagosController.cs
 │   └── HistorialController.cs

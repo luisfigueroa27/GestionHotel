@@ -70,18 +70,23 @@ Como administrador, necesito registrar pagos y servicios de cuarto y consultar h
 
 ### Functional Requirements
 
-- **FR-001**: El sistema DEBE permitir registrar, consultar, actualizar y eliminar habitaciones con su estado operativo.
-- **FR-002**: El sistema DEBE mantener estados operativos de habitación, incluyendo disponible, ocupada y en mantenimiento.
-- **FR-003**: El sistema DEBE validar que solo habitaciones disponibles y operativas puedan asignarse a un hospedaje.
-- **FR-004**: El sistema DEBE permitir registrar huéspedes y asociarlos a hospedajes.
-- **FR-005**: El sistema DEBE permitir iniciar hospedajes cuando exista disponibilidad de habitación.
-- **FR-006**: El sistema DEBE calcular automáticamente el costo total del hospedaje al registrar la salida, considerando noches.
-- **FR-007**: El sistema DEBE permitir registrar consumos de servicio al cuarto vinculados a un hospedaje activo.
-- **FR-008**: El sistema DEBE permitir registrar pagos parciales y totales, actualizando el saldo pendiente del hospedaje.
-- **FR-009**: El sistema DEBE impedir pagos que excedan el saldo pendiente y operaciones inconsistentes con el estado del hospedaje.
--**FR-010**: El sistema DEBE permitir consultar el historial de hospedajes, pagos y servicios registrados.
-- **FR-011**: El sistema DEBE requerir autenticación de usuario para acceder a funciones administrativas.
-- **FR-012**: El sistema DEBE mostrar mensajes de validación claros ante datos incompletos, inválidos o en conflicto.
+- **FR-001**: El sistema debe permitir al administrador autenticarse mediante un usuario y contraseña para acceder al sistema.
+- **FR-002**: El sistema debe permitir registrar, modificar, eliminar y consultar habitaciones del hotel.
+- **FR-003**: El sistema debe permitir administrar los diferentes tipos de habitación, incluyendo nombre y características.
+- **FR-004**: El sistema debe permitir registrar nuevos huéspedes y consultar su información mediante el número de DNI.
+- **FR-005**: El sistema debe permitir registrar hospedajes asociando una habitación disponible con un huésped.
+- **FR-006**: El sistema debe actualizar automáticamente el estado de la habitación (Disponible, Ocupada, Vencida o Mantenimiento) según las operaciones realizadas.
+- **FR-007**: Extensión de hospedaje	El sistema debe permitir modificar la fecha de salida de un hospedaje cuando el huésped solicite ampliar su estadía.
+- **FR-008**: El sistema debe permitir finalizar un hospedaje y actualizar automáticamente el estado de la habitación correspondiente.
+- **FR-009**: El sistema debe permitir registrar pagos, calcular el saldo pendiente y actualizar el estado del pago.
+-**FR-010**: El sistema debe permitir completar pagos pendientes actualizando el monto pagado y el saldo restante.
+- **FR-011**: El sistema debe permitir registrar solicitudes de servicio para una habitación ocupada.
+- **FR-012**: El sistema debe permitir cambiar el estado de un servicio desde Pendiente hasta Completado.
+- **FR-013**: El sistema debe mostrar el historial completo de hospedajes realizados en el hotel.
+- **FR-014**: El sistema debe mostrar indicadores estadísticos del hotel, incluyendo habitaciones disponibles, ocupadas, vencidas, mantenimiento e ingresos.
+- **FR-015**: El sistema debe mostrar un gráfico interactivo de ingresos por fecha para apoyar la toma de decisiones.
+- **FR-016**: El sistema debe permitir filtrar la información del Dashboard mediante una fecha de inicio y una fecha de fin.
+- **FR-017**: El sistema debe permitir al administrador cerrar sesión de manera segura.
 
 ### Key Entities *(include if feature involves data)*
 
